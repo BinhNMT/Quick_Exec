@@ -12,8 +12,10 @@
 #include <string.h>
 #include <unistd.h>
 
+/* Language ID definition */
 #define C 		1
 #define Python 	2
+#define Bash 	3
 
 
 /* 
@@ -56,6 +58,12 @@ static int exe_dect(char *source)
 	else if(!strcmp(buff, ".py"))
 	{
 		ret = Python;
+		goto out;
+	}
+
+	else if(!strcmp(buff, ".sh"))
+	{
+		ret = Bash;
 		goto out;
 	}
 	
@@ -152,6 +160,7 @@ static int file_exect(int type, char *filename)
 	
 	switch(type)
 	{
+		case Bash:
 		case C: 
 			len_exe = strlen(ec);
 			exe = ec;
@@ -193,6 +202,10 @@ int main(int argc, char *argv[])
 		
 		case Python:
 			file_exect(Python, argv[1]);
+			break;
+		
+		case Bash:
+			file_exect(Bash, argv[1]);
 			break;
 	}
 		
