@@ -145,23 +145,70 @@ static void exe_remove(char *filename)
 }
 
 
+/* Describe: This function is used to get all arguments that have to passing to the target
+ * @argc: numbers of arguments
+ * @exe: base execute command depend on language
+ * @argv: arguments
+ */
+static void arg_cml(int argc, char *exe, char *argv[])
+{
+	int len_exe = strlen(exe);
+	int len_cmd = 0;
+	int arg[argc];
+	char *cmd;
+
+	for(int i=0; i<argc; i++)
+	{
+		arg[i] = strlen(argv[i]);
+	}
+
+	for(int j=1; j<argc; j++)
+	{
+		len_cmd += arg[j];
+	}
+
+	len_cmd += len_exe + (argc-2);
+	cmd = malloc(len_cmd);
+	strcpy(cmd, exe);
+	
+	for(int k=2; k<argc; k++)
+	{
+		strcat(cmd, " ");
+		strcat(cmd, argv[k]);
+	}
+	
+	// printf("%s\n", cmd);
+	system(cmd);	// execute command
+	free(cmd);
+}
+
+
 /* Describe: This function is used to execute the executable file
  * following the according to the type of source file language
  * @type: type of source file language
  * @filename: The executable file input
  */
-static int file_exect(int type, char *filename)
+ static void file_exect(int type, int argc, char *arg[])
 {
 	/* Base execute command */
 	char *ec = "./";				// Base command for execute C
 	char *py = "python ";			// Base command for python execute
 	char *exe;
 	int len_exe;
+	int len_filename;
+	
+	char *exe_file;
 	
 	switch(type)
 	{
 		case Bash:
-		case C: 
+			len_exe = strlen(ec);
+			exe = ec;
+			break;
+			
+		case C:
+			exe_file = strcut(arg[1]);
+			build_cmd(arg[1], exe_file);
 			len_exe = strlen(ec);
 			exe = ec;
 			break;
@@ -173,41 +220,33 @@ static int file_exect(int type, char *filename)
 	}
 	
 	/* Merge command component */
-	int len_filename = strlen(filename);
-	int len_cmd = len_exe + len_filename;
-	char cmd[len_cmd];
-	strcpy(cmd, exe);
-	strcat(cmd, filename);
+	if(type == C)
+	{
+		len_filename = strlen(exe_file);
+		int len_cmd = len_exe + len_filename;
+		char cmd[len_cmd];
+		strcpy(cmd, exe);
+		strcat(cmd, exe_file);
+		arg_cml(argc, cmd, arg);
+		exe_remove(exe_file);
+	}
 	
-	system(cmd);	// execute command
-	
-	return 0;
+	else
+	{
+		len_filename = strlen(arg[1]);
+		int len_cmd = len_exe + len_filename;
+		char cmd[len_cmd];
+		strcpy(cmd, exe);
+		strcat(cmd, arg[1]);
+		arg_cml(argc, cmd, arg);
+	}
 }
 
 
 int main(int argc, char *argv[])
 {
-	char *exe_file;
-	int type;
-	
-	type = exe_dect(argv[1]);
-	switch(type)
-	{
-		case C:
-			exe_file = strcut(argv[1]);
-			build_cmd(argv[1], exe_file);
-			file_exect(type, exe_file);
-			exe_remove(exe_file);
-			break;
-		
-		case Python:
-			file_exect(Python, argv[1]);
-			break;
-		
-		case Bash:
-			file_exect(Bash, argv[1]);
-			break;
-	}
+	int type = exe_dect(argv[1]);
+	file_exect(type, argc, argv);
 		
 	return 0;
 }
