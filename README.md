@@ -7,4 +7,4 @@ Step 1: do "make" command.
 Step 2: copy "run" output file in to "/usr/bin" on your Linux system.
 Step 3: you can uses it with following command syntax:
 
-        #run <source file>
+        #run <source file> <argument_1> <agument_N>
