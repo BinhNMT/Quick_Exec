@@ -12,10 +12,7 @@
 #include <string.h>
 #include <unistd.h>
 
-/* Language ID definition */
-#define C 		1
-#define Python 	2
-#define Bash 	3
+#include "run.h"
 
 
 /* 
@@ -188,7 +185,7 @@ static void arg_cml(int argc, char *exe, char *argv[])
  * @type: type of source file language
  * @filename: The executable file input
  */
- static void file_exect(int type, int argc, char *arg[])
+static void file_exect(int type, int argc, char *arg[])
 {
 	/* Base execute command */
 	char *ec = "./";				// Base command for execute C
