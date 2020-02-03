@@ -107,7 +107,6 @@ static char *strcut(int type, char *source)
 			break;
 	}
 	
-	
 	return filename;
 }
 
@@ -222,38 +221,35 @@ static void file_exect(int type, int argc, char *arg[])
 	/* Base execute command */
 	char *ec = "./";				// Base command for execute C
 	char *py = "python ";			// Base command for python execute
-	char *exe;
-	int len_exe;
-	int len_filename;
-	
-	char *exe_file;
+	char *exe, *exe_file;
+	int len_exe, len_filename, len_cmd;
 	
 	switch(type)
 	{
 		case Bash:
-			len_exe = strlen(ec);
-			exe = ec;
-			break;
+			goto setup;
 			
 		case Cpp:
 		case C:
 			exe_file = strcut(type, arg[1]);
 			build_cmd(type, arg[1], exe_file);
-			len_exe = strlen(ec);
-			exe = ec;
-			break;
+			goto setup;
 		
 		case Python:
 			len_exe = strlen(py);
 			exe = py;
 			break;
 	}
+
+	setup:
+		len_exe = strlen(ec);
+		exe = ec;
 	
 	/* Merge command component */
 	if(type == C || type == Cpp)
 	{
 		len_filename = strlen(exe_file);
-		int len_cmd = len_exe + len_filename;
+		len_cmd = len_exe + len_filename;
 		char cmd[len_cmd];
 		strcpy(cmd, exe);
 		strcat(cmd, exe_file);
@@ -264,7 +260,7 @@ static void file_exect(int type, int argc, char *arg[])
 	else
 	{
 		len_filename = strlen(arg[1]);
-		int len_cmd = len_exe + len_filename;
+		len_cmd = len_exe + len_filename;
 		char cmd[len_cmd];
 		strcpy(cmd, exe);
 		strcat(cmd, arg[1]);
