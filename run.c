@@ -63,6 +63,12 @@ static int exe_dect(char *source)
 		ret = Bash;
 		goto out;
 	}
+
+	else if(!strcmp(buff, ".cpp"))
+	{
+		ret = Cpp;
+		goto out;
+	}
 	
 	printf("Executable file does not supported !!!\n");
 	
@@ -76,16 +82,31 @@ static int exe_dect(char *source)
  * Describe: This function is used to cut (*.c) extention to get only filename
  * @source: source file input
  */
-static char *strcut(char *source)
+static char *strcut(int type, char *source)
 {
 	int length = strlen(source);
-	char *filename = malloc(length - 2);
+	char *filename;
 	
 	/* Execute to split file exetention "*.c" */
-	for(int i=0; i<(length-2); i++)
+	switch(type)
 	{
-		filename[i] = source[i];
+		case C:
+			filename = malloc(length - 2);
+			for(int i=0; i<(length-2); i++)
+			{
+				filename[i] = source[i];
+			}
+			break;
+		
+		case Cpp:
+			filename = malloc(length - 2);
+			for(int i=0; i<(length-4); i++)
+			{
+				filename[i] = source[i];
+			}
+			break;
 	}
+	
 	
 	return filename;
 }
@@ -97,10 +118,21 @@ static char *strcut(char *source)
  * @Source: source file input
  * @filename: executable output file name
  */
-static void build_cmd(char *source, char *filename)
+static void build_cmd(int type, char *source, char *filename)
 {
+	char *gcc;
+
 	/* Build command syntax components */
-	char *gcc = "gcc ";
+	if(type == Cpp)
+	{
+		gcc = "g++ ";
+	}
+
+	else
+	{
+		gcc = "gcc ";
+	}
+
 	char *obj = " -o ";
 	
 	/* Setup build command */
@@ -203,9 +235,10 @@ static void file_exect(int type, int argc, char *arg[])
 			exe = ec;
 			break;
 			
+		case Cpp:
 		case C:
-			exe_file = strcut(arg[1]);
-			build_cmd(arg[1], exe_file);
+			exe_file = strcut(type, arg[1]);
+			build_cmd(type, arg[1], exe_file);
 			len_exe = strlen(ec);
 			exe = ec;
 			break;
@@ -217,7 +250,7 @@ static void file_exect(int type, int argc, char *arg[])
 	}
 	
 	/* Merge command component */
-	if(type == C)
+	if(type == C || type == Cpp)
 	{
 		len_filename = strlen(exe_file);
 		int len_cmd = len_exe + len_filename;

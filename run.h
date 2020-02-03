@@ -16,6 +16,7 @@
 #define C 		1
 #define Python 	2
 #define Bash 	3
+#define Cpp     4
 
 /* 
  * Describe: This function is used to detecting source file format
@@ -27,7 +28,7 @@ static int exe_dect(char *source);
  * Describe: This function is used to cut (*.c) extention to get only filename
  * @source: source file input
  */
-static char *strcut(char *source);
+static char *strcut(int type, char *source);
 
 /*
  * Describe: This function is used to generating
@@ -35,7 +36,7 @@ static char *strcut(char *source);
  * @Source: source file input
  * @filename: executable output file name
  */
-static void build_cmd(char *source, char *filename);
+static void build_cmd(int type, char *source, char *filename);
 
 /* Describe: This function is used to delete executable file
  * @filename: executable output file name  
