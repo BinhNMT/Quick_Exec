@@ -227,23 +227,23 @@ static void file_exect(int type, int argc, char *arg[])
 	switch(type)
 	{
 		case Bash:
-			goto setup;
+			len_exe = strlen(ec);
+			exe = ec;
+			break;
 			
 		case Cpp:
 		case C:
 			exe_file = strcut(type, arg[1]);
 			build_cmd(type, arg[1], exe_file);
-			goto setup;
+			len_exe = strlen(ec);
+			exe = ec;
+			break;
 		
 		case Python:
 			len_exe = strlen(py);
 			exe = py;
 			break;
 	}
-
-	setup:
-		len_exe = strlen(ec);
-		exe = ec;
 	
 	/* Merge command component */
 	if(type == C || type == Cpp)
