@@ -1,5 +1,5 @@
-CC=gcc
-run: run.c
-	$(CC) -o run run.c
+CC=g++
+run: run.cpp
+	$(CC) -o run run.cpp
 clean:
 	rm -rf run
