@@ -18,6 +18,7 @@ class Executable
 {
 	protected:
 		void arg_cml(int argc, char *exe, char *argv[]);
+		virtual void file_exect(){};
 };
 
 
