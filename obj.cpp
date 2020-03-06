@@ -1,6 +1,6 @@
 /*
- * robj.cpp
- * This is open-source program that help quick execute source file
+ * obj.cpp
+ * This is an open-source program that help quick execute source file
  * with just only one command.
  * You can clone, uses, modify and distribute it.
  * 

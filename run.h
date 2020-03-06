@@ -1,6 +1,6 @@
 /*
  * run.h
- * This is open-source program that help quick execute source file
+ * This is an open-source program that help quick execute source file
  * with just only one command.
  * You can clone, uses, modify and distribute it.
  * 
